@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using ASP.NET_Core_MVC.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ASP.NET_Core_MVC.Models;
+namespace Harmic.Models;
 
 public partial class HarmicContext : DbContext
 {
@@ -46,6 +47,7 @@ public partial class HarmicContext : DbContext
     public virtual DbSet<TbRole> TbRoles { get; set; }
 
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TbAccount>(entity =>
@@ -65,7 +67,7 @@ public partial class HarmicContext : DbContext
 
             entity.HasOne(d => d.Role).WithMany(p => p.TbAccounts)
                 .HasForeignKey(d => d.RoleId)
-                .HasConstraintName("FK_tb_Account_tb_Role");
+                .HasConstraintName("FK_tb_Account_Role");
         });
 
         modelBuilder.Entity<TbBlog>(entity =>
@@ -88,11 +90,11 @@ public partial class HarmicContext : DbContext
 
             entity.HasOne(d => d.Account).WithMany(p => p.TbBlogs)
                 .HasForeignKey(d => d.AccountId)
-                .HasConstraintName("FK_tb_Blog_tb_Account");
+                .HasConstraintName("FK_tb_Blog_Account");
 
             entity.HasOne(d => d.Category).WithMany(p => p.TbBlogs)
                 .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK_tb_Blog_tb_Category");
+                .HasConstraintName("FK_tb_Blog_Category");
         });
 
         modelBuilder.Entity<TbBlogComment>(entity =>
@@ -109,7 +111,7 @@ public partial class HarmicContext : DbContext
 
             entity.HasOne(d => d.Blog).WithMany(p => p.TbBlogComments)
                 .HasForeignKey(d => d.BlogId)
-                .HasConstraintName("FK_tb_BlogComment_tb_Blog");
+                .HasConstraintName("FK_tb_BlogComment_Blog");
         });
 
         modelBuilder.Entity<TbCategory>(entity =>
@@ -195,7 +197,7 @@ public partial class HarmicContext : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.TbNews)
                 .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK_tb_News_tb_Category");
+                .HasConstraintName("FK_tb_News_Category");
         });
 
         modelBuilder.Entity<TbOrder>(entity =>
@@ -215,9 +217,9 @@ public partial class HarmicContext : DbContext
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.Phone).HasMaxLength(15);
 
-            entity.HasOne(d => d.QuanlityNavigation).WithMany(p => p.TbOrders)
-                .HasForeignKey(d => d.Quanlity)
-                .HasConstraintName("FK_tb_Order_tb_OrderStatus");
+            entity.HasOne(d => d.OrderStatus).WithMany(p => p.TbOrders)
+                .HasForeignKey(d => d.OrderStatusId)
+                .HasConstraintName("FK_tb_Order_OrderStatus");
         });
 
         modelBuilder.Entity<TbOrderDetail>(entity =>
@@ -230,7 +232,11 @@ public partial class HarmicContext : DbContext
 
             entity.HasOne(d => d.Order).WithMany(p => p.TbOrderDetails)
                 .HasForeignKey(d => d.OrderId)
-                .HasConstraintName("FK_tb_OrderDetail_tb_Order");
+                .HasConstraintName("FK_tb_OrderDetail_Order");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.TbOrderDetails)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_tb_OrderDetail_Product");
         });
 
         modelBuilder.Entity<TbOrderStatus>(entity =>
@@ -260,7 +266,7 @@ public partial class HarmicContext : DbContext
 
             entity.HasOne(d => d.CategoryProduct).WithMany(p => p.TbProducts)
                 .HasForeignKey(d => d.CategoryProductId)
-                .HasConstraintName("FK_tb_Product_tb_ProductCategory");
+                .HasConstraintName("FK_tb_Product_ProductCategory");
         });
 
         modelBuilder.Entity<TbProductCategory>(entity =>
@@ -281,19 +287,20 @@ public partial class HarmicContext : DbContext
 
         modelBuilder.Entity<TbProductReview>(entity =>
         {
-            entity.HasKey(e => e.ProductReviewId);
-
-            entity.ToTable("tb_ProductReview");
+            entity
+                .HasNoKey()
+                .ToTable("tb_ProductReview");
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.Detail).HasMaxLength(200);
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.ProductReviewId).ValueGeneratedOnAdd();
 
-            entity.HasOne(d => d.Product).WithMany(p => p.TbProductReviews)
+            entity.HasOne(d => d.Product).WithMany()
                 .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK_tb_ProductReview_tb_Product");
+                .HasConstraintName("FK_tb_ProductReview_Product");
         });
 
         modelBuilder.Entity<TbRole>(entity =>

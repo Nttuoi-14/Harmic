@@ -1,4 +1,5 @@
 ﻿using ASP.NET_Core_MVC.Models;
+using Harmic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
