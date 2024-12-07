@@ -1,0 +1,72 @@
+﻿@model ASP.NET_Core_MVC.Models.TbProduct
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>xóa sản phẩm</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">General Form</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Xóa sản phẩm</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                            <div class="card-body">
+                                <div class="from-group">
+                                    <label for="exampleInputEmail1">Tiêu đề:</label>
+                                    @Html.DisplayFor(model => model.Title)
+                                </div>
+                                <div class="from-group">
+                                    <label for="exampleInputPassword1">Alias:</label>
+                                    @Html.DisplayFor(model => model.Alias)
+                                </div>
+                                <div class="from-group">
+                                    <label for="exampleInputPassword1">Mô tả:</label>
+                                    @Html.DisplayFor(model => model.Description)
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1"></label>
+                                    <div class="text-center">
+                                        <img src="@Model.Image" alt="Product Image" style="max-width: 100%; height: auto;" />
+                                    </div>
+                                </div>
+                                <form asp-action="Delete" class="mt-4">
+                                    <input type="hidden" asp-for="ProductId" />
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <input type="submit" value="Xóa" class="btn btn-danger" />
+                                        <a asp-action="Index" class="btn btn-primary">Quay lại</a>
+                                    </div>
+                                    <p class="text-danger">Bạn có chắc chắn muốn xóa sản phẩm này? </p>
+                                </form>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
